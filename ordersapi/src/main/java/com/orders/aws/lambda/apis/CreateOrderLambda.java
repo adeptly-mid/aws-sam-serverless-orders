@@ -1,5 +1,9 @@
 package com.orders.aws.lambda.apis;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,6 +32,11 @@ public class CreateOrderLambda {
       responseMap.put("orderId", order.getId());
       String responseBody = objectMapper.writeValueAsString(responseMap);
 
+      DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
+      Table table = dynamoDB.getTable(System.getenv("ORDERS_TABLE"));
+      Item item = new Item().withPrimaryKey("id", order.getId()).withString("itemName", order.getItemName())
+          .withInt("quantity", order.getQuantity());
+      table.putItem(item);
       return response.withStatusCode(200).withBody(responseBody);
 
     } catch (JsonMappingException e) {

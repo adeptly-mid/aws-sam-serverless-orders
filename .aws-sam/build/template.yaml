@@ -10,12 +10,26 @@ Globals:
     Runtime: java17
     MemorySize: 512
     Timeout: 30
+    Environment:
+      Variables:
+        ORDERS_TABLE:
+          Ref: OrdersTable
 Resources:
+  OrdersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
   CreateOrderFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: CreateOrderFunction
       Handler: com.orders.aws.lambda.apis.CreateOrderLambda::createOrder
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: OrdersTable
       Events:
         OrderEvents:
           Type: Api
@@ -29,6 +43,10 @@ Resources:
     Properties:
       CodeUri: ReadOrdersFunction
       Handler: com.orders.aws.lambda.apis.ReadOrdersLambda::readOrders
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: OrdersTable
       Events:
         OrderEvents:
           Type: Api
