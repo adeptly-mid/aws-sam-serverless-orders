@@ -1,15 +1,15 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  ordersapi
+Description: 'ordersapi
 
   Sample SAM Template for ordersapi
 
+  '
 Resources:
   CreateOrderFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ordersapi
+      CodeUri: CreateOrderFunction
       Handler: com.orders.aws.lambda.apis.CreateOrderLambda::createOrder
       Runtime: java17
       MemorySize: 512
@@ -20,10 +20,12 @@ Resources:
           Properties:
             Path: /orders
             Method: POST
+    Metadata:
+      SamResourceId: CreateOrderFunction
   ReadOrdersFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ordersapi
+      CodeUri: ReadOrdersFunction
       Handler: com.orders.aws.lambda.apis.ReadOrdersLambda::handleRequest
       Runtime: java17
       MemorySize: 512
@@ -34,3 +36,5 @@ Resources:
           Properties:
             Path: /orders
             Method: GET
+    Metadata:
+      SamResourceId: ReadOrdersFunction
