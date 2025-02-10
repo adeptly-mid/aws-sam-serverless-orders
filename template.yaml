@@ -19,7 +19,7 @@ Resources:
     Properties:
       PrimaryKey:
         Name: id
-        Type: String
+        Type: Number
   CreateOrderFunction:
     Type: AWS::Serverless::Function
     Properties:
