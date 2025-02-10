@@ -35,31 +35,6 @@ ordersapi/
 - Maven
 - An AWS account with appropriate permissions
 
-## Local Development
-
-### Build the Project
-
-```bash
-mvn clean package
-```
-
-### Run Local DynamoDB
-
-```bash
-docker run -p 8000:8000 amazon/dynamodb-local
-```
-
-### Start Local API
-
-```bash
-sam local start-api
-```
-
-### Run Tests
-
-```bash
-mvn test
-```
 
 ## Deployment Commands
 
