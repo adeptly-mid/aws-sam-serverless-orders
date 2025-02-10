@@ -55,3 +55,20 @@ Resources:
             Method: GET
     Metadata:
       SamResourceId: ReadOrdersFunction
+Outputs:
+  CreateOrdersAPI:
+    Description: API endpoint url for create functions
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/orders/
+  CreateOrderFunction:
+    Description: Create order lambda function ARN
+    Value:
+      Fn::GetAtt:
+      - CreateOrderFunction
+      - Arn
+  CreateOrderFunctionIAM:
+    Description: Create order lambda function ARN
+    Value:
+      Fn::GetAtt:
+      - CreateOrderFunctionRole
+      - Arn

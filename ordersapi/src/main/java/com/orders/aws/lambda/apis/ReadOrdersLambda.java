@@ -14,11 +14,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orders.aws.lambda.apis.model.Order;
 
 public class ReadOrdersLambda {
+  private static final ObjectMapper objectMapper = new ObjectMapper();
+
+  private static final AmazonDynamoDB dynamoDB = AmazonDynamoDBClientBuilder.defaultClient();
+
   public APIGatewayProxyResponseEvent readOrders(APIGatewayProxyRequestEvent request)
       throws JsonProcessingException, JsonMappingException {
-    ObjectMapper objectMapper = new ObjectMapper();
 
-    AmazonDynamoDB dynamoDB = AmazonDynamoDBClientBuilder.defaultClient();
     ScanResult scanResult = dynamoDB.scan(new ScanRequest().withTableName(System.getenv("ORDERS_TABLE")));
     List<Order> orders = scanResult.getItems().stream()
         .map(item -> new Order(

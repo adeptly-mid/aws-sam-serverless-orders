@@ -17,6 +17,8 @@ public class CreateOrderLambda {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
+  private static final DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
+
   public APIGatewayProxyResponseEvent createOrder(APIGatewayProxyRequestEvent request) {
     APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
     try {
@@ -32,7 +34,6 @@ public class CreateOrderLambda {
       responseMap.put("orderId", order.getId());
       String responseBody = objectMapper.writeValueAsString(responseMap);
 
-      DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
       Table table = dynamoDB.getTable(System.getenv("ORDERS_TABLE"));
       Item item = new Item().withPrimaryKey("id", order.getId()).withString("itemName", order.getItemName())
           .withInt("quantity", order.getQuantity());

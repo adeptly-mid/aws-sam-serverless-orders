@@ -48,3 +48,13 @@ Resources:
           Properties:
             Path: /orders
             Method: GET
+Outputs:
+  CreateOrdersAPI:
+    Description: "API endpoint url for create functions"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/orders/"
+  CreateOrderFunction:
+    Description: "Create order lambda function ARN"
+    Value: !GetAtt CreateOrderFunction.Arn
+  CreateOrderFunctionIAM:
+    Description: "Create order lambda function ARN"
+    Value: !GetAtt CreateOrderFunctionRole.Arn
